@@ -3,9 +3,9 @@ package com.example.account.controllers
 import com.example.account.controllers.models.AccountRequest
 import com.example.account.controllers.models.AccountResponse
 import com.example.account.entities.Account
+import com.example.account.exceptions.BusinessException
 import com.example.account.usecases.CreateAccount
 import com.fasterxml.jackson.databind.ObjectMapper
-import org.apache.catalina.User
 import org.spockframework.spring.SpringBean
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
@@ -60,5 +60,28 @@ class AccountControllerTest extends Specification {
 
         responseBody.id != null
         responseBody.saldo == 100d
+    }
+
+    def "Business error"() {
+        given: "the request body"
+
+        AccountRequest accountRequest = new AccountRequest(100d)
+
+        when: "do POST to register user"
+
+        MvcResult result = mockMvc.perform(post("/accounts")
+                .content(objectMapper.writeValueAsString(accountRequest))
+                .contentType(MediaType.APPLICATION_JSON))
+                .andReturn()
+
+        then: "request token use case should be called and return"
+
+        1 * createAccount.execute(100d) >> {
+            throw new BusinessException("business message")
+        }
+
+        and: "status should be"
+
+        result.response.status == HttpStatus.UNPROCESSABLE_ENTITY.value()
     }
 }
