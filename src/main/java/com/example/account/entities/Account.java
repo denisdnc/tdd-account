@@ -1,5 +1,7 @@
 package com.example.account.entities;
 
+import com.example.account.exceptions.OperationNotAllowed;
+
 import java.util.UUID;
 
 public class Account {
@@ -17,7 +19,15 @@ public class Account {
     }
 
     public void debit(double value) {
+        if (value > balance) {
+            throw new OperationNotAllowed("valor maior que saldo");
+        }
+
         balance = balance - value;
+    }
+
+    public void credit(double value) {
+        balance = balance + value;
     }
 
     public double getBalance() {

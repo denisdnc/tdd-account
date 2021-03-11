@@ -48,4 +48,39 @@ class DoOperationTest extends Specification {
         result.balance == 50d
     }
 
+    def "fazer um deposito"() {
+        given: "uma conta com saldo"
+
+        1 * accountGateway.findById("fake-account-id") >> new Account("fake-account-id", 100d)
+
+        and: "um valor para o depósito"
+
+        double value = 50d
+
+        and: "uma operação"
+
+        Operation operation = Operation.CREDIT
+
+        and: "um id da conta"
+
+        String accountId = "fake-account-id"
+
+        when: "eu executar a operação"
+
+        Account result = doOperation.execute(operation, value, accountId)
+
+        then: "deve salvar o saldo atualizado"
+
+        1 * accountGateway.update(_ as Account) >> {
+            Account arg ->
+                assert arg.id == "fake-account-id"
+                assert arg.balance == 150d
+        }
+
+        and: "deve retornar a conta atualizada"
+
+        result.id == "fake-account-id"
+        result.balance == 150d
+    }
+
 }

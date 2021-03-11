@@ -19,6 +19,10 @@ public class DoOperation {
             account.debit(value);
         }
 
+        if (Operation.CREDIT.equals(operation)) {
+            account.credit(value);
+        }
+
         accountGateway.update(account);
 
         return account;
