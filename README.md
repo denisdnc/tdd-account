@@ -76,13 +76,13 @@ URL a ser criado: PUT: /accounts/{id}
 ```json
   {
     "valor": 50.00,
-    "operacao": "DEBITO"
+    "operacao": "DEBIT"
   }
 ```
 ```json
   {
     "valor": 50.00,
-    "operacao": "CREDITO"
+    "operacao": "CREDIT"
   }
 ```
 Regras:
