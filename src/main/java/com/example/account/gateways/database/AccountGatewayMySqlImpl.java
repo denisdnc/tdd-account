@@ -20,4 +20,14 @@ public class AccountGatewayMySqlImpl implements AccountGateway {
                 "INSERT INTO accounts(id_conta, saldo) " +
                     "VALUES (?, ?);", account.getId(), account.getBalance());
     }
+
+    @Override
+    public void update(Account account) {
+
+    }
+
+    @Override
+    public Account findById(String id) {
+        return null;
+    }
 }

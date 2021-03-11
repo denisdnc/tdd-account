@@ -4,12 +4,20 @@ import java.util.UUID;
 
 public class Account {
 
-    private String id;
+    private final String id;
     private double balance;
 
     public Account(double balance) {
-        this.id = UUID.randomUUID().toString();
+        this(UUID.randomUUID().toString(), balance);
+    }
+
+    public Account(String id, double balance) {
+        this.id = id;
         this.balance = balance;
+    }
+
+    public void debit(double value) {
+        balance = balance - value;
     }
 
     public double getBalance() {
