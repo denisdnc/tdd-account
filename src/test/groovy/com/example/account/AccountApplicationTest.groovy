@@ -1,4 +1,4 @@
-package account
+package com.example.account
 
 import com.example.account.AccountApplication
 import spock.lang.Specification
