@@ -1,6 +1,7 @@
 package com.example.account.gateways.database
 
-
+import com.example.account.entities.Conta
+import com.example.account.gateways.ContaGateway
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase
 import org.springframework.boot.test.context.SpringBootTest
@@ -32,13 +33,15 @@ class GatewayMySqlImplTest extends Specification {
 
     /** component to test */
     @Autowired
-//    Gateway accountGateway
+    ContaGateway contaGateway;
 
     @Transactional
-    def "test"() {
-        given: ""
+    def "Salvar conta bancaria"() {
+        given: "Uma conta bancaria"
+        Conta conta = new Conta(2.22D)
 
-        when: ""
+        when: "Salvar a conta bancaria"
+        contaGateway.save(conta)
 
         then: "A conta bancaria deve estar salva"
 
@@ -46,7 +49,7 @@ class GatewayMySqlImplTest extends Specification {
                 String.format("SELECT id_conta FROM accounts " +
                         "WHERE id_conta = '%s';", conta.id), UUID.class)
 
-        result == 1
+        result == conta.id
     }
 
 }

@@ -32,28 +32,29 @@ class ControllerTest extends Specification {
     @Autowired
     ObjectMapper objectMapper
 
+    @SpringBean
+    CriarConta criarConta = Mock()
+
     /** dependencies */
 //    @SpringBean
 
-    def "Do POST on /something correctly"() {
+    def "Do POST on /account correctly"() {
         given: "the request body"
-
-        // TODO
+        ContaRequest contaRequest = new ContaRequest(123D)
 
         when: "do POST to register user"
 
-        MvcResult result = mockMvc.perform(post("/something")
-//                .content(objectMapper.writeValueAsString(accountRequest))
+        MvcResult result = mockMvc.perform(post("/api/v1/accounts")
+                .content(objectMapper.writeValueAsString(contaRequest))
                 .contentType(MediaType.APPLICATION_JSON))
                 .andReturn()
 
         then: "request token use case should be called and return"
-
-        //
+        1 * criarConta.execute(123) >> new Conta(123)
 
         and: "status should be"
 
-//        result.response.status == HttpStatus.CREATED.value()
+        result.response.status == HttpStatus.CREATED.value()
 
         and: "response body should match properties"
         ContaResponseBody contaResponseBody = objectMapper.readValue(result.response.contentAsString, ContaResponseBody.class)
