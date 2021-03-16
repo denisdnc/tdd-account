@@ -24,7 +24,6 @@ import java.sql.ResultSet
 ])
 @SqlMergeMode(SqlMergeMode.MergeMode.MERGE)
 @ActiveProfiles(value = "test")
-@Ignore
 class GatewayMySqlImplTest extends Specification {
 
     /** utils */
@@ -41,11 +40,11 @@ class GatewayMySqlImplTest extends Specification {
 
         when: ""
 
-        then: ""
+        then: "A conta bancaria deve estar salva"
 
-//        Integer result = jdbcTemplate.queryForObject(
-//                String.format("SELECT COUNT(*) AS cherere FROM astarara a " +
-//                        "WHERE tururu = '%s';", "var"), Integer.class)
+        UUID result = jdbcTemplate.queryForObject(
+                String.format("SELECT id_conta FROM accounts " +
+                        "WHERE id_conta = '%s';", conta.id), UUID.class)
 
         result == 1
     }
